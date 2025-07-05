@@ -4,9 +4,7 @@
   lib,
   nixpkgs,
   ...
-}: let
-  immich-dir = "/mnt/immich";
-in {
+}: {
   services.immich = {
     enable = true;
     database.enable = true;
@@ -14,12 +12,12 @@ in {
     port = 2283;
     openFirewall = true;
     # accelerationDevices = null;
-    mediaLocation = immich-dir;
+    mediaLocation = "/mnt/immich";
   };
 
   users.users.immich.extraGroups = ["video" "render"];
 
-  services.postgresql.dataDir = immich-dir + "/postgresql";
+  services.postgresql.dataDir = "/mnt/immich-postgres";
 
   environment.systemPackages = [pkgs.immich-cli];
 }
