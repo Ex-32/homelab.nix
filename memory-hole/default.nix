@@ -18,6 +18,7 @@
     ./immich
     ./jellyfin
     ./networking
+    ./nextcloud
     ./samba
   ];
 
