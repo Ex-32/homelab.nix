@@ -47,7 +47,6 @@
     "/mnt/immich-postgres" = optional-dataset "tank/encrypt/immich/postgres";
     "/mnt/jellyfin" = optional-dataset "tanklet/encrypt/jellyfin";
     "/mnt/nextcloud" = optional-dataset "tank/encrypt/nextcloud";
-    "/mnt/samba" = optional-dataset "tank/encrypt/samba";
   };
 
   swapDevices = [

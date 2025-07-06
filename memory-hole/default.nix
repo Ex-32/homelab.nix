@@ -19,7 +19,6 @@
     ./jellyfin
     ./networking
     ./nextcloud
-    ./samba
   ];
 
   environment.systemPackages = [
