@@ -58,17 +58,21 @@
           ++ (let
             jf = config.services.jellyfin;
           in (lib.lists.optional jf.enable jf.group));
-        # FIXME: remove plaintext password hash
         hashedPasswordFile = config.sops.secrets."login/admin".path;
         openssh.authorizedKeys.keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOur5HKJFSG3TktQCoy1V+t/wIQLo7d0auhSt6IrVkJ6 jenna@zion"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOur5HKJFSG3TktQCoy1V+t/wIQLo7d0auhSt6IrVkJ6"
         ];
       };
     };
 
-    # FIXME: this is bad practice, find a better way to auth colmena
-    # deployments and remove this
-    security.sudo.wheelNeedsPassword = false;
+    security = {
+      sudo.wheelNeedsPassword = false;
+      doas = {
+        enable = true;
+        wheelNeedsPassword = false;
+      };
+    };
+    # deployment.privilegeEscalationCommand = ["doas" "-n" "--"];
 
     system.stateVersion = "24.11";
   };
