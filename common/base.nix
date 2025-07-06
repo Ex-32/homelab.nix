@@ -66,13 +66,13 @@
     };
 
     security = {
-      sudo.wheelNeedsPassword = false;
+      sudo.enable = false;
       doas = {
         enable = true;
         wheelNeedsPassword = false;
       };
     };
-    # deployment.privilegeEscalationCommand = ["doas" "-n" "--"];
+    deployment.privilegeEscalationCommand = ["doas" "-n" "--"];
 
     system.stateVersion = "24.11";
   };
