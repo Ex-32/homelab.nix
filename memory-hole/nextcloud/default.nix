@@ -5,21 +5,49 @@
   nixpkgs,
   ...
 }: let
-  admin-password = "services/nextcloud/admin_password";
+  admin-secret = "services/nextcloud/admin_password";
+  admin-secret-path = config.sops.secrets."${admin-secret}".path;
+  nextcloud-home = "/var/lib/nextcloud";
 in {
-  services.nextcloud = {
-    enable = true;
-    package = pkgs.nextcloud31;
-    home = "/mnt/nextcloud";
-    hostName = "100.100.1.164";
-    configureRedis = true;
-    config = {
-      adminpassFile = config.sops.secrets."${admin-password}".path;
-      dbtype = "sqlite";
+  containers.nextcloud = {
+    autoStart = true;
+    ephemeral = true;
+    bindMounts = {
+      nextcloud-home = {
+        mountPoint = nextcloud-home;
+        hostPath = "/mnt/nextcloud/home";
+        isReadOnly = false;
+      };
+      admin-secret = {
+        mountPoint = admin-secret-path;
+        hostPath = admin-secret-path;
+        isReadOnly = true;
+      };
     };
+    config = let
+      globalConfig = config;
+    in
+      {
+        config,
+        pkgs,
+        lib,
+        ...
+      }: {
+        services.nextcloud = {
+          enable = true;
+          package = pkgs.nextcloud31;
+          home = nextcloud-home;
+          hostName = globalConfig.networking.fqdn;
+          configureRedis = true;
+          config = {
+            adminpassFile = admin-secret-path;
+            dbtype = "sqlite";
+          };
+        };
+
+        system.stateVersion = globalConfig.system.stateVersion;
+      };
   };
 
-  sops.secrets."${admin-password}" = {
-    sopsFile = ../secrets.yaml;
-  };
+  sops.secrets."${admin-secret}".sopsFile = ../secrets.yaml;
 }
