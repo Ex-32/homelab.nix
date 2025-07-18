@@ -23,6 +23,11 @@ in {
         hostPath = admin-secret-path;
         isReadOnly = true;
       };
+      logs = {
+        mountPoint = "/var/log";
+        hostPath = "/mnt/nextcloud/logs";
+        isReadOnly = false;
+      };
     };
     config = let
       globalConfig = config;

@@ -12,12 +12,15 @@
     port = 2283;
     openFirewall = true;
     # accelerationDevices = null;
-    mediaLocation = "/mnt/immich";
+    mediaLocation = "/mnt/immich/home";
   };
 
   users.users.immich.extraGroups = ["video" "render"];
 
-  services.postgresql.dataDir = "/mnt/immich-postgres";
+  services.postgresql = {
+    dataDir = "/mnt/immich/postgres";
+    settings.port = 5432;
+  };
 
   environment.systemPackages = [pkgs.immich-cli];
 }
