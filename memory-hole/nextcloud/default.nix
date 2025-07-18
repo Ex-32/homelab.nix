@@ -12,6 +12,14 @@ in {
   containers.nextcloud = {
     autoStart = true;
     ephemeral = true;
+    # privateNetwork = true;
+    # forwardPorts = [
+    #   {
+    #     hostPort = 8080;
+    #     containerPort = 80;
+    #     protocol = "tcp";
+    #   }
+    # ];
     bindMounts = {
       nextcloud-home = {
         mountPoint = nextcloud-home;
