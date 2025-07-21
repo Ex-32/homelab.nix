@@ -12,13 +12,13 @@
     port = 2283;
     openFirewall = true;
     # accelerationDevices = null;
-    mediaLocation = "/mnt/immich/home";
+    mediaLocation = "/mnt/immich";
   };
 
   users.users.immich.extraGroups = ["video" "render"];
 
   services.postgresql = {
-    dataDir = "/mnt/immich/postgres";
+    dataDir = "/mnt/immich-postgres";
     settings.port = 5432;
   };
 
