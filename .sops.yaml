@@ -1,14 +1,16 @@
 keys:
  - &admin_homelab age130ky00j8mzpn4p3spcmv7h6xhppjf47hnapwdt8mm0v488xa53vqctmfkg
- - &host_memory_hole age1d2kx69cg6ayhuvhwlyq682ddaf20zfs6k0thhjeq77rtrw80qs6q7wqe99
  - &host_astrocontrol age14gh5xpzwws7pnnwvdq228d6ngsrhz328ud7j9ft6h490vj7zv58qehxa0v
+ - &host_kiroshi age1ffsxuckdem6jtcg7asuwz2qvszzd9vky0echfs22sstzm0nk2phqwt9hzn
+ - &host_memory_hole age1d2kx69cg6ayhuvhwlyq682ddaf20zfs6k0thhjeq77rtrw80qs6q7wqe99
 creation_rules:
  - path_regex: common/secrets\.yaml
    key_groups:
    - age:
      - *admin_homelab
-     - *host_memory_hole
      - *host_astrocontrol
+     - *host_kiroshi
+     - *host_memory_hole
  - path_regex: memory-hole/secrets\.yaml
    key_groups:
    - age:

@@ -24,8 +24,9 @@
         };
       };
 
-      memory-hole = import ./memory-hole;
       astrocontrol = import ./astrocontrol;
+      kiroshi = import ./kiroshi;
+      memory-hole = import ./memory-hole;
     };
 
     devShells = let
