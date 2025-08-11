@@ -26,6 +26,17 @@
     pkgs.htop
   ];
 
+  # NOTE: suspend is kinda broken on like *all* even semi-modern mac hardware,
+  # so we'll have to do without
+  systemd.targets = {
+    sleep.enable = false;
+    suspend.enable = false;
+    hibernate.enable = false;
+    hybrid-sleep.enable = false;
+  };
+
+  time.timeZone = "US/Central";
+
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware = {
     enableRedistributableFirmware = true;
