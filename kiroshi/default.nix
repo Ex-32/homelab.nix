@@ -16,8 +16,10 @@
     inputs.nixos-hardware.nixosModules.apple-imac-18-2
     ../common/base.nix
     ./boot
+    ./desktop
     ./filesystem
     ./networking
+    ./user
   ];
 
   environment.systemPackages = [
