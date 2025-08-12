@@ -18,13 +18,13 @@ in {
     };
 
     loader = {
-      systemd-boot = {
-        enable = true;
-        configurationLimit = 1;
-      };
       efi = {
         canTouchEfiVariables = true;
-        efiSysMountPoint = "/boot";
+        efiSysMountPoint = "/boot/efi";
+      };
+      grub = {
+        efiSupport = true;
+        device = "nodev";
       };
     };
 
