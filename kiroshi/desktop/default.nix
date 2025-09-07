@@ -5,6 +5,10 @@
   nixpkgs,
   ...
 }: {
+  allowedUnfree = [
+    "spotify"
+  ];
+
   hardware = {
     graphics.enable = true;
     bluetooth = {
@@ -42,6 +46,7 @@
 
   environment.systemPackages = with pkgs; [
     firefox
+    spotify
     vlc
     wayland-utils
     wl-clipboard
