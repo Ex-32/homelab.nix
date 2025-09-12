@@ -5,12 +5,26 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     impermanence.url = "github:nix-community/impermanence";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs @ {nixpkgs, ...}: {
+  outputs = inputs @ {nixpkgs, ...}: let
+    forSystems = nixpkgs.lib.genAttrs [
+      "aarch64-linux"
+      "x86_64-linux"
+    ];
+    nixpkgsFor = forSystems (system: nixpkgs.legacyPackages.${system});
+
+    astrocontrol = import ./astrocontrol;
+    kiroshi = import ./kiroshi;
+    memory-hole = import ./memory-hole;
+  in {
     colmena = {
       meta = {
         specialArgs = {inherit inputs;};
@@ -20,29 +34,39 @@
         };
       };
 
-      astrocontrol = import ./astrocontrol;
-      kiroshi = import ./kiroshi;
-      memory-hole = import ./memory-hole;
+      inherit astrocontrol kiroshi memory-hole;
     };
 
-    devShells = let
-      forSystems = nixpkgs.lib.genAttrs [
-        "aarch64-linux"
-        "x86_64-linux"
-      ];
+    packages = forSystems (system: let
+      pkgs = nixpkgsFor.${system};
+    in {
+      astrocontrol-image = inputs.nixos-generators.nixosGenerate {
+        inherit system;
+        format = "sd-aarch64";
+        specialArgs = {inherit inputs;};
+        modules = [
+          astrocontrol
+          # this is here to provide a dummy option that disregards deployment
+          # config consumed by colmena when building the sd-image
+          ({...}: {
+            options.deployment = pkgs.lib.mkOption {
+              type = pkgs.lib.types.anything;
+            };
+          })
+        ];
+      };
+    });
 
-      nixpkgsFor = forSystems (system: import nixpkgs {inherit system;});
-    in
-      forSystems (system: let
-        pkgs = nixpkgsFor.${system};
-      in {
-        default = pkgs.mkShell {
-          packages = with pkgs; [
-            colmena
-            sops
-            ssh-to-age
-          ];
-        };
-      });
+    devShells = forSystems (system: let
+      pkgs = nixpkgsFor.${system};
+    in {
+      default = pkgs.mkShell {
+        packages = with pkgs; [
+          colmena
+          sops
+          ssh-to-age
+        ];
+      };
+    });
   };
 }
