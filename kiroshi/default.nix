@@ -22,10 +22,6 @@
     ./user
   ];
 
-  environment.systemPackages = [
-    pkgs.htop
-  ];
-
   # NOTE: suspend is kinda broken on like *all* even semi-modern mac hardware,
   # so we'll have to do without
   systemd.targets = {

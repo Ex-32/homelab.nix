@@ -25,7 +25,6 @@
     nix.settings = {
       experimental-features = ["nix-command" "flakes"];
       use-xdg-base-directories = true;
-      allowed-users = lib.mkForce ["@wheel"];
       trusted-users = lib.mkForce ["@wheel"];
     };
 
@@ -66,16 +65,17 @@
     };
 
     security = {
-      sudo = {
-        enable = true;
-        wheelNeedsPassword = false;
-      };
+      sudo.enable = false;
       doas = {
         enable = true;
         wheelNeedsPassword = false;
       };
     };
-    # deployment.privilegeEscalationCommand = ["doas" "-n" "--"];
+    deployment.privilegeEscalationCommand = ["doas" "-n" "--"];
+
+    environment.systemPackages = [
+      pkgs.htop
+    ];
 
     system.stateVersion = "24.11";
   };

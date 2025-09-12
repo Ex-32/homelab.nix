@@ -15,10 +15,6 @@
     ./networking
   ];
 
-  environment.systemPackages = [
-    pkgs.htop
-  ];
-
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
   hardware.enableRedistributableFirmware = true;
 }
