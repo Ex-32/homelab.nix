@@ -49,6 +49,7 @@
     "/mnt/nextcloud/home" = optional-dataset "tank/encrypt/nextcloud";
     "/mnt/nextcloud/logs" = optional-dataset "tank/encrypt/nextcloud/logs";
     "/mnt/samba" = optional-dataset "tank/encrypt/samba";
+    "/mnt/syncthing" = optional-dataset "tank/encrypt/syncthing";
   };
 
   swapDevices = [
