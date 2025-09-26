@@ -48,6 +48,7 @@
     "/mnt/jellyfin" = optional-dataset "tanklet/encrypt/jellyfin";
     "/mnt/nextcloud/home" = optional-dataset "tank/encrypt/nextcloud";
     "/mnt/nextcloud/logs" = optional-dataset "tank/encrypt/nextcloud/logs";
+    "/mnt/samba" = optional-dataset "tank/encrypt/samba";
   };
 
   swapDevices = [
