@@ -7,10 +7,16 @@
 }: {
   containers.immich = let
     dbDir = "/mnt/postgres";
+    mediaDir = "/mnt/immich";
   in {
     autoStart = true;
     ephemeral = true;
     bindMounts = {
+      immich = {
+        mountPoint = mediaDir;
+        hostPath = mediaDir;
+        isReadOnly = false;
+      };
       immich-db = {
         mountPoint = dbDir;
         hostPath = "/mnt/immich-db";
@@ -38,6 +44,7 @@
           port = 2283;
           openFirewall = true;
           # accelerationDevices = null;
+          mediaLocation = mediaDir;
         };
 
         users = {
