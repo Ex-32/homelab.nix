@@ -12,14 +12,19 @@
     autoStart = true;
     ephemeral = true;
     bindMounts = {
-      immich = {
+      immich-data = {
         mountPoint = mediaDir;
-        hostPath = mediaDir;
+        hostPath = "/mnt/immich/data";
         isReadOnly = false;
       };
       immich-db = {
         mountPoint = dbDir;
-        hostPath = "/mnt/immich-db";
+        hostPath = "/mnt/immich/db";
+        isReadOnly = false;
+      };
+      immich-library = {
+        mountPoint = "/mnt/library";
+        hostPath = "/mnt/immich/library";
         isReadOnly = false;
       };
       syncthing = rec {

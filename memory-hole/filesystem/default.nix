@@ -43,8 +43,9 @@
     "/nix" = required-dataset "rpool/encrypt/nix";
     "/persist" = required-dataset "rpool/encrypt/persist";
 
-    "/mnt/immich" = optional-dataset "tank/encrypt/immich";
-    "/mnt/immich-db" = optional-dataset "tank/encrypt/immich/db";
+    "/mnt/immich/data" = optional-dataset "tank/encrypt/immich";
+    "/mnt/immich/db" = optional-dataset "tank/encrypt/immich/db";
+    "/mnt/immich/library" = optional-dataset "tank/encrypt/immich/library";
     "/mnt/jellyfin" = optional-dataset "tanklet/encrypt/jellyfin";
     "/mnt/nextcloud/home" = optional-dataset "tank/encrypt/nextcloud";
     "/mnt/nextcloud/logs" = optional-dataset "tank/encrypt/nextcloud/logs";
