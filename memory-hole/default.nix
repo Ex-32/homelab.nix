@@ -15,7 +15,7 @@
     ../common/base.nix
     ./boot
     ./filesystem
-    # ./immich
+    ./immich
     ./jellyfin
     ./networking
     ./nextcloud

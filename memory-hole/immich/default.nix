@@ -38,10 +38,13 @@
           port = 2283;
           openFirewall = true;
           # accelerationDevices = null;
-          mediaLocation = "/var/empty";
         };
 
-        users.users.immich.extraGroups = ["video" "render"];
+        users = {
+          users.immich.extraGroups = ["video" "render" "syncthing"];
+          # FIXME: remove implicit dependency on syncthing
+          groups.syncthing.gid = globalConfig.users.groups.syncthing.gid;
+        };
 
         services.postgresql = {
           dataDir = dbDir;
