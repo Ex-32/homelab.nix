@@ -11,28 +11,40 @@
   in {
     autoStart = true;
     ephemeral = true;
-    bindMounts = {
-      immich-data = {
-        mountPoint = mediaDir;
-        hostPath = "/mnt/immich/data";
-        isReadOnly = false;
-      };
-      immich-db = {
-        mountPoint = dbDir;
-        hostPath = "/mnt/immich/db";
-        isReadOnly = false;
-      };
-      immich-library = {
-        mountPoint = "/mnt/library";
-        hostPath = "/mnt/immich/library";
-        isReadOnly = false;
-      };
-      syncthing = rec {
-        mountPoint = "/mnt/syncthing";
-        hostPath = mountPoint;
-        isReadOnly = false;
-      };
-    };
+    bindMounts =
+      {
+        immich-data = {
+          mountPoint = mediaDir;
+          hostPath = "/mnt/immich/data";
+          isReadOnly = false;
+        };
+        immich-db = {
+          mountPoint = dbDir;
+          hostPath = "/mnt/immich/db";
+          isReadOnly = false;
+        };
+        immich-library = {
+          mountPoint = "/mnt/library";
+          hostPath = "/mnt/immich/library";
+          isReadOnly = false;
+        };
+      }
+      // (let
+        syncthing-dirs = [
+          "pixel7-dcim"
+          "pixel7-downloads"
+          "pixel7-pictures"
+        ];
+        genBindMount = dir: {
+          name = "syncthing-${dir}";
+          value = rec {
+            mountPoint = "/mnt/syncthing/${dir}";
+            hostPath = mountPoint;
+            isReadOnly = true;
+          };
+        };
+      in
+        builtins.listToAttrs (builtins.map genBindMount syncthing-dirs));
     config = let
       globalConfig = config;
     in
