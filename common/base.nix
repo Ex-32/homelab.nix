@@ -56,7 +56,8 @@
           ["wheel"]
           ++ (let
             jf = config.services.jellyfin;
-          in (lib.lists.optional jf.enable jf.group));
+          in
+            lib.lists.optional jf.enable jf.group);
         hashedPasswordFile = config.sops.secrets."login/admin".path;
         openssh.authorizedKeys.keys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOur5HKJFSG3TktQCoy1V+t/wIQLo7d0auhSt6IrVkJ6"
@@ -64,6 +65,7 @@
       };
     };
 
+    # in this house, we don't sudo, we doas
     security = {
       sudo.enable = false;
       doas = {
@@ -73,8 +75,20 @@
     };
     deployment.privilegeEscalationCommand = ["doas" "-n" "--"];
 
+    # cli utilities that any machine should have
     environment.systemPackages = [
+      pkgs.duf
+      pkgs.dust
+      pkgs.fd
+      pkgs.file
+      pkgs.fselect
+      pkgs.fzf
       pkgs.htop
+      pkgs.lsof
+      pkgs.man-pages
+      pkgs.pciutils
+      pkgs.ripgrep
+      pkgs.usbutils
     ];
 
     system.stateVersion = "24.11";
