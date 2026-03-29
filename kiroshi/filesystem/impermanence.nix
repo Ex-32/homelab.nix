@@ -44,8 +44,4 @@ in {
 
   # don't fuck with /etc/machine-id since we're handling that
   systemd.services."systemd-machine-id-commit".enable = false;
-
-  # NOTE: this is needed so that sops can extract decrypt the secrets
-  # (including admin login password) during the boot process
-  fileSystems."/etc/ssh".neededForBoot = true;
 }
