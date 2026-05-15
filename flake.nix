@@ -28,10 +28,8 @@
     colmena = {
       meta = {
         specialArgs = {inherit inputs;};
-        nixpkgs = import nixpkgs {
-          system = "x86_64-linux";
-          overlays = [];
-        };
+        # this is the build platform
+        nixpkgs = nixpkgs.legacyPackages."x86_64-linux";
       };
 
       inherit astrocontrol kiroshi memory-hole;
