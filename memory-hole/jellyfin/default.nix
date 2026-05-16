@@ -9,7 +9,7 @@
 in {
   services.jellyfin = {
     enable = true;
-    openFirewall = true;
+    # openFirewall = true;
     dataDir = jellyfin-dir + "/data";
     cacheDir = jellyfin-dir + "/cache";
   };

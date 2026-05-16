@@ -59,7 +59,7 @@
           database.enable = true;
           host = "0.0.0.0";
           port = 2283;
-          openFirewall = true;
+          # openFirewall = true;
           # accelerationDevices = null;
           mediaLocation = mediaDir;
         };
