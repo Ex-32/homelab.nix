@@ -5,15 +5,8 @@
   nixpkgs,
   ...
 }: let
-  ip-prefix = "10.69.1";
-
-  forward = {
-    srcPort = 2283;
-    destPort = 2283;
-    destAddr = "${ip-prefix}.2";
-  };
 in {
-  webForward = [forward];
+  webService.immich.id = 1;
 
   containers.immich = let
     dbDir = "/mnt/postgres";
@@ -23,8 +16,8 @@ in {
     ephemeral = true;
 
     privateNetwork = true;
-    hostAddress = "${ip-prefix}.1";
-    localAddress = "${ip-prefix}.2";
+    hostAddress = config.webService.immich.hostIP;
+    localAddress = config.webService.immich.localIP;
 
     bindMounts =
       {
@@ -73,7 +66,7 @@ in {
           enable = true;
           database.enable = true;
           host = "0.0.0.0";
-          port = forward.destPort;
+          port = globalConfig.webService.immich.internalPort;
           openFirewall = true;
           # accelerationDevices = null;
           mediaLocation = mediaDir;
