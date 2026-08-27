@@ -55,12 +55,7 @@
       mutableUsers = false;
       users.admin = {
         isNormalUser = true;
-        extraGroups =
-          ["wheel"]
-          ++ (let
-            jf = config.services.jellyfin;
-          in
-            lib.lists.optional jf.enable jf.group);
+        extraGroups = ["wheel"];
         hashedPasswordFile = config.sops.secrets."login/admin".path;
         openssh.authorizedKeys.keys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOur5HKJFSG3TktQCoy1V+t/wIQLo7d0auhSt6IrVkJ6"
