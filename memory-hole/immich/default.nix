@@ -4,13 +4,28 @@
   lib,
   nixpkgs,
   ...
-}: {
+}: let
+  ip-prefix = "10.69.1";
+
+  forward = {
+    srcPort = 2283;
+    destPort = 2283;
+    destAddr = "${ip-prefix}.1";
+  };
+in {
+  webForward = [forward];
+
   containers.immich = let
     dbDir = "/mnt/postgres";
     mediaDir = "/mnt/immich";
   in {
     autoStart = true;
     ephemeral = true;
+
+    privateNetwork = true;
+    hostAddress = "${ip-prefix}.1";
+    localAddress = "${ip-prefix}.2";
+
     bindMounts =
       {
         immich-data = {
@@ -58,7 +73,7 @@
           enable = true;
           database.enable = true;
           host = "0.0.0.0";
-          port = 2283;
+          port = forward.destPort;
           openFirewall = true;
           # accelerationDevices = null;
           mediaLocation = mediaDir;
