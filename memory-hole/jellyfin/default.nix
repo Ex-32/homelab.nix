@@ -12,16 +12,6 @@ in {
     internalPort = 8096;
   };
 
-  users = {
-    users.jellyfin = {
-      isSystemUser = true;
-      group = "jellyfin";
-    };
-    groups.jellyfin = {
-      members = ["admin"];
-    };
-  };
-
   containers.jellyfin = {
     autoStart = true;
     ephemeral = true;
@@ -47,8 +37,10 @@ in {
         lib,
         ...
       }: {
-        users.users.jellyfin.uid = globalConfig.users.users.jellyfin.uid;
-        users.groups.jellyfin.gid = globalConfig.users.groups.jellyfin.gid;
+        users = {
+          users.jellyfin.uid = globalConfig.users.users.service.uid;
+          groups.jellyfin.gid = globalConfig.users.groups.service.gid;
+        };
 
         services.jellyfin = {
           enable = true;

@@ -73,8 +73,14 @@ in {
         };
 
         users = {
-          users.immich.extraGroups = ["video" "render" "syncthing"];
-          groups.syncthing.gid = globalConfig.users.groups.syncthing.gid;
+          users.immich = {
+            uid = globalConfig.users.users.service.uid;
+            extraGroups = ["video" "render" "syncthing"];
+          };
+          groups = {
+            immich.gid = globalConfig.users.groups.service.gid;
+            syncthing.gid = globalConfig.users.groups.syncthing.gid;
+          };
         };
 
         services.postgresql = {

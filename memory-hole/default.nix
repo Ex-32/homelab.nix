@@ -23,6 +23,18 @@
     ./syncthing
   ];
 
+  users = {
+    users.service = {
+      isSystemUser = true;
+      uid = 670;
+      group = "service";
+    };
+    groups.service = {
+      gid = 670;
+      members = ["admin"];
+    };
+  };
+
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware = {
     enableRedistributableFirmware = true;
