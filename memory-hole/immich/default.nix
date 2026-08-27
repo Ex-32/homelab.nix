@@ -10,7 +10,7 @@
   forward = {
     srcPort = 2283;
     destPort = 2283;
-    destAddr = "${ip-prefix}.1";
+    destAddr = "${ip-prefix}.2";
   };
 in {
   webForward = [forward];

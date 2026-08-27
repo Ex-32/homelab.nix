@@ -89,7 +89,7 @@ in {
           destPort,
           destAddr,
         }: {
-          name = "${hostName}.${domain}:${builtins.toString srcPort}, http://:${builtins.toString srcPort}";
+          name = "${hostName}.${domain}:${builtins.toString srcPort}";
           value = {
             extraConfig = ''
               reverse_proxy ${destAddr}:${builtins.toString destPort}
