@@ -18,15 +18,6 @@
     firewall = {
       enable = lib.mkForce true;
       allowPing = true;
-
-      allowedTCPPorts = [22];
-      extraInputRules = ''
-        # accept all trafic from the tailnet
-        ip saddr 100.100.1.0/24 accept
-
-        # drop everything else
-        drop
-      '';
     };
   };
 }
