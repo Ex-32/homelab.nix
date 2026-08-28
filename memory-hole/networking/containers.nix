@@ -55,7 +55,10 @@ in {
             type = types.deferredModule;
             readOnly = true;
             default = {...}: {
-              networking.resolvconf.enable = false;
+              networking = {
+                resolvconf.enable = false;
+                firewall.allowedTCPPorts = [config.internalPort];
+              };
               environment.etc."resolv.conf".text = ''
                 nameserver ${config.hostIP}
               '';

@@ -43,6 +43,8 @@
     "/nix" = required-dataset "rpool/encrypt/nix";
     "/persist" = required-dataset "rpool/encrypt/persist";
 
+    "/mnt/copyparty/data" = optional-dataset "tank/encrypt/copyparty";
+    "/mnt/copyparty/vol" = optional-dataset "tank/encrypt/copyparty/vol";
     "/mnt/immich/data" = optional-dataset "tank/encrypt/immich";
     "/mnt/immich/db" = optional-dataset "tank/encrypt/immich/db";
     "/mnt/immich/library" = optional-dataset "tank/encrypt/immich/library";

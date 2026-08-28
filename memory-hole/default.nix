@@ -14,6 +14,7 @@
   imports = [
     ../common/base.nix
     ./boot
+    ./copyparty
     ./filesystem
     ./immich
     ./jellyfin
