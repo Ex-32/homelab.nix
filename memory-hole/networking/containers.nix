@@ -74,26 +74,6 @@ in {
       }));
       default = {};
     };
-
-    tcpForward = lib.mkOption {
-      type = types.listOf (types.submodule {
-        options = {
-          srcPort = lib.mkOption {
-            type = types.int;
-            description = "The source port on the host that will be forwarded.";
-          };
-          destPort = lib.mkOption {
-            type = types.int;
-            description = "The destination port that will be forwarded to";
-          };
-          destAddr = lib.mkOption {
-            type = types.str;
-            description = "The destination address that will be forwarded to";
-          };
-        };
-      });
-      default = [];
-    };
   };
 
   config = let
@@ -116,8 +96,7 @@ in {
     networking = {
       firewall = {
         allowedTCPPorts =
-          (map (x: x.srcPort) config.tcpForward)
-          ++ (map (x: x.httpPort) webServices)
+          (map (x: x.httpPort) webServices)
           ++ (map (x: x.httpsPort) webServices);
 
         interfaces."ve-+" = {
@@ -126,20 +105,9 @@ in {
         };
       };
 
-      nat = let
-        tcpForwards2forwardPorts = {
-          srcPort,
-          destPort,
-          destAddr,
-        }: {
-          sourcePort = srcPort;
-          proto = "tcp";
-          destination = "${destAddr}:${toString destPort}";
-        };
-      in {
+      nat = {
         enable = true;
         internalInterfaces = ["ve-+"];
-        forwardPorts = map tcpForwards2forwardPorts config.tcpForward;
       };
     };
 

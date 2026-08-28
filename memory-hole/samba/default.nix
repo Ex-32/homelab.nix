@@ -5,11 +5,13 @@
   nixpkgs,
   ...
 }: {
-  users.users.samba = {
-    isSystemUser = true;
-    group = "samba";
+  users = {
+    users.samba = {
+      isSystemUser = true;
+      group = "samba";
+    };
+    groups.samba = {};
   };
-  users.groups.samba = {};
 
   services.samba = {
     enable = true;
