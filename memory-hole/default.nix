@@ -18,8 +18,8 @@
     ./immich
     ./jellyfin
     ./networking
-    # ./nextcloud
     ./samba
+    ./stash
     ./syncthing
   ];
 

@@ -35,7 +35,7 @@ in {
       }: {
         imports = [
           ../container
-          globalConfig.webService.immich.module
+          globalConfig.webService.jellyfin.module
         ];
 
         users = {
