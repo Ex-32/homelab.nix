@@ -15,10 +15,6 @@ in {
     autoStart = true;
     ephemeral = true;
 
-    privateNetwork = true;
-    hostAddress = config.webService.immich.hostIP;
-    localAddress = config.webService.immich.localIP;
-
     bindMounts =
       {
         immich-data = {
@@ -62,6 +58,11 @@ in {
         lib,
         ...
       }: {
+        imports = [
+          ../container
+          globalConfig.webService.immich.module
+        ];
+
         services.immich = {
           enable = true;
           database.enable = true;

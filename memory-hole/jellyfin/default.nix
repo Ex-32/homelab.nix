@@ -16,10 +16,6 @@ in {
     autoStart = true;
     ephemeral = true;
 
-    privateNetwork = true;
-    hostAddress = config.webService.jellyfin.hostIP;
-    localAddress = config.webService.jellyfin.localIP;
-
     bindMounts = {
       jellyfin-data = {
         mountPoint = jellyfin-dir;
@@ -37,6 +33,11 @@ in {
         lib,
         ...
       }: {
+        imports = [
+          ../container
+          globalConfig.webService.immich.module
+        ];
+
         users = {
           users.jellyfin.uid = globalConfig.users.users.service.uid;
           groups.jellyfin.gid = globalConfig.users.groups.service.gid;
