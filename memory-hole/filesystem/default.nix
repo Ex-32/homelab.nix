@@ -51,7 +51,8 @@
     "/mnt/jellyfin" = optional-dataset "tanklet/encrypt/jellyfin";
     "/mnt/nextcloud/home" = optional-dataset "tank/encrypt/nextcloud";
     "/mnt/nextcloud/logs" = optional-dataset "tank/encrypt/nextcloud/logs";
-    "/mnt/samba" = optional-dataset "tank/encrypt/samba";
+    "/mnt/samba/data" = optional-dataset "tank/encrypt/samba";
+    "/mnt/samba/share" = optional-dataset "tank/encrypt/samba/share";
     "/mnt/stash/data" = optional-dataset "tank/encrypt/stash";
     "/mnt/stash/library" = optional-dataset "tank/encrypt/stash/library";
     "/mnt/syncthing" = optional-dataset "tank/encrypt/syncthing";
