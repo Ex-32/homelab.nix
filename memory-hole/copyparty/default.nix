@@ -90,6 +90,9 @@ in {
             re-maxage = 3600;
             e2dsa = true;
             e2ts = true;
+
+            xff-src = globalConfig.webService.copyparty.hostIP;
+            rproxy = 1;
           };
 
           accounts = {
