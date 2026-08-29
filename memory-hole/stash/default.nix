@@ -69,6 +69,9 @@ in {
           dataDir = "/mnt/data";
 
           mutableSettings = true;
+
+          username = "admin";
+          passwordFile = "/run/secrets/admin_password";
         };
 
         system.stateVersion = globalConfig.system.stateVersion;
