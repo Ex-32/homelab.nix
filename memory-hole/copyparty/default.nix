@@ -8,9 +8,7 @@
 }: let
   copyparty-dir = "/mnt/copyparty";
 
-  secrets = {
-    admin = "services/copyparty/admin_password";
-  };
+  secrets = ["admin_password"];
 in {
   webService.copyparty = {
     id = 3;
@@ -46,6 +44,12 @@ in {
         mountPoint = "/mnt/stash";
         hostPath = "/mnt/stash/library";
         isReadOnly = false;
+      };
+
+      secrets = {
+        mountPoint = "/run/secrets";
+        hostPath = "/run/secrets/services/copyparty";
+        isReadOnly = true;
       };
     };
 
@@ -89,7 +93,7 @@ in {
           };
 
           accounts = {
-            "admin".passwordFile = globalConfig.sops.secrets."${secrets.admin}".path;
+            "admin".passwordFile = "/run/secrets/admin_password";
           };
 
           volumes = let
@@ -128,8 +132,12 @@ in {
   };
 
   sops.secrets = builtins.listToAttrs (map (secret: {
-      name = secret;
-      value = {sopsFile = ../secrets.yaml;};
+      name = "services/copyparty/${secret}";
+      value = {
+        sopsFile = ../secrets.yaml;
+        owner = "service";
+        group = "service";
+      };
     })
-    (builtins.attrValues secrets));
+    secrets);
 }

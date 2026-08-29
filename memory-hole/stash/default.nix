@@ -7,11 +7,7 @@
 }: let
   stash-dir = "/mnt/stash";
 
-  secrets = {
-    admin = "services/stash/admin_password";
-    jwt-key = "services/stash/jwt_key";
-    session-key = "services/stash/session_key";
-  };
+  secrets = ["admin_password" "jwt_key" "session_key"];
 in {
   webService.stash = {
     id = 69;
@@ -32,6 +28,12 @@ in {
         mountPoint = "/mnt/library";
         hostPath = stash-dir + "/library";
         isReadOnly = false;
+      };
+
+      secrets = {
+        mountPoint = "/run/secrets";
+        hostPath = "/run/secrets/services/stash";
+        isReadOnly = true;
       };
     };
 
@@ -74,8 +76,12 @@ in {
   };
 
   sops.secrets = builtins.listToAttrs (map (secret: {
-      name = secret;
-      value = {sopsFile = ../secrets.yaml;};
+      name = "services/stash/${secret}";
+      value = {
+        sopsFile = ../secrets.yaml;
+        owner = "service";
+        group = "service";
+      };
     })
-    (builtins.attrValues secrets));
+    secrets);
 }
