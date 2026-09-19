@@ -116,11 +116,16 @@ in {
 
               flags = {
                 dedup = true;
+                dots = true;
               };
             };
             "/samba" = {
               path = "/mnt/samba";
               access = admin-only;
+
+              flags = {
+                dots = true;
+              };
             };
             "/jellyfin" = {
               path = "/mnt/jellyfin";
@@ -133,6 +138,10 @@ in {
             "/pi-home" = {
               path = "/mnt/pi/home";
               access = admin-only;
+
+              flags = {
+                dots = true;
+              };
             };
           };
 
