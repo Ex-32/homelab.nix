@@ -17,6 +17,11 @@ in {
         hostPath = pi-dir + "/home";
         isReadOnly = false;
       };
+      pi-ssh = {
+        mountPoint = "/etc/ssh";
+        hostPath = pi-dir + "/ssh";
+        isReadOnly = false;
+      };
     };
 
     config = let
@@ -47,9 +52,21 @@ in {
             homeMode = "700";
             shell = pkgs.bash;
             createHome = true;
+            openssh.authorizedKeys.keys = [
+              "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOom0DL7dOkxkF2Xf2s5LX8Z6w8u/ugde2CiA28kUCIm"
+            ];
           };
           groups.pi = {
             gid = globalConfig.users.groups.service.gid;
+          };
+        };
+
+        services.openssh = {
+          enable = true;
+          ports = lib.mkForce [31415];
+          settings = {
+            PermitRootLogin = "no";
+            PasswordAuthentication = false;
           };
         };
 

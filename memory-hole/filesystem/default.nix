@@ -52,6 +52,7 @@
     "/mnt/nextcloud/home" = optional-dataset "tank/encrypt/nextcloud";
     "/mnt/nextcloud/logs" = optional-dataset "tank/encrypt/nextcloud/logs";
     "/mnt/pi/home" = optional-dataset "tank/encrypt/pi/home";
+    "/mnt/pi/ssh" = optional-dataset "tank/encrypt/pi/ssh";
     "/mnt/samba/data" = optional-dataset "tank/encrypt/samba";
     "/mnt/samba/share" = optional-dataset "tank/encrypt/samba/share";
     "/mnt/stash/data" = optional-dataset "tank/encrypt/stash";
