@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+    unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,12 +20,17 @@
     };
   };
 
-  outputs = inputs @ {nixpkgs, ...}: let
+  outputs = inputs @ {
+    nixpkgs,
+    unstable,
+    ...
+  }: let
     forSystems = nixpkgs.lib.genAttrs [
       "aarch64-linux"
       "x86_64-linux"
     ];
     nixpkgsFor = forSystems (system: nixpkgs.legacyPackages.${system});
+    unstableFor = forSystems (system: unstable.legacyPackages.${system});
 
     astrocontrol = import ./astrocontrol;
     kiroshi = import ./kiroshi;
@@ -32,9 +38,14 @@
   in {
     colmena = {
       meta = {
-        specialArgs = {inherit inputs;};
+        specialArgs = {
+          inherit inputs;
+          # FIXME: this may not work if i want to use unstable packages on an
+          # arm device like astrocontrol, it's unclear.
+          unstablePkgs = unstableFor."x86_64-linux";
+        };
         # this is the build platform
-        nixpkgs = nixpkgs.legacyPackages."x86_64-linux";
+        nixpkgs = nixpkgsFor."x86_64-linux";
       };
 
       inherit astrocontrol kiroshi memory-hole;

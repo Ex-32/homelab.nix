@@ -3,6 +3,7 @@
   pkgs,
   lib,
   nixpkgs,
+  unstablePkgs,
   ...
 }: let
   pi-dir = "/mnt/pi";
@@ -81,9 +82,9 @@ in {
           pkgs.lsof
           pkgs.man-pages
           pkgs.pciutils
-          pkgs.pi-coding-agent
           pkgs.ripgrep
           pkgs.usbutils
+          unstablePkgs.pi-coding-agent
         ];
 
         nix.settings = {
