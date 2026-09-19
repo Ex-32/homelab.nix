@@ -45,6 +45,11 @@ in {
         hostPath = "/mnt/stash/library";
         isReadOnly = false;
       };
+      pi-home = {
+        mountPoint = "/mnt/pi/home";
+        hostPath = "/mnt/pi/home";
+        isReadOnly = false;
+      };
 
       secrets = {
         mountPoint = "/run/secrets";
@@ -123,6 +128,10 @@ in {
             };
             "/stash" = {
               path = "/mnt/stash";
+              access = admin-only;
+            };
+            "/pi-home" = {
+              path = "/mnt/pi/home";
               access = admin-only;
             };
           };

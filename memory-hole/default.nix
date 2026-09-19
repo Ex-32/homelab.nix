@@ -19,6 +19,7 @@
     ./immich
     ./jellyfin
     ./networking
+    ./pi
     ./samba
     ./stash
     ./syncthing
