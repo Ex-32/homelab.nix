@@ -71,21 +71,39 @@ in {
           };
         };
 
-        environment.systemPackages = [
-          pkgs.duf
-          pkgs.dust
-          pkgs.fd
-          pkgs.file
-          pkgs.fselect
-          pkgs.fzf
-          pkgs.htop
-          pkgs.lsof
-          pkgs.man-pages
-          pkgs.pciutils
-          pkgs.ripgrep
-          pkgs.usbutils
-          unstablePkgs.pi-coding-agent
-        ];
+        environment.systemPackages =
+          [
+            (unstablePkgs.python3.withPackages (ps:
+              with ps; [
+                ipympl
+                jupyter
+                matplotlib
+                numpy
+                opencv4
+                pandas
+                plotille
+                pwntools
+                scipy
+                sympy
+              ]))
+          ]
+          ++ (with unstablePkgs; [
+            bat
+            dust
+            fd
+            file
+            fzf
+            git
+            htop
+            jq
+            lazygit
+            man-pages
+            neovim
+            nodejs
+            pi-coding-agent
+            ripgrep
+            zellij
+          ]);
 
         nix.settings = {
           experimental-features = ["nix-command" "flakes"];
