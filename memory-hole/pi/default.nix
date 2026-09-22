@@ -86,6 +86,37 @@ in {
                 scipy
                 sympy
               ]))
+            (unstablePkgs.symlinkJoin {
+              name = "helix-with-deps";
+              paths = [pkgs.helix];
+              nativeBuildInputs = [pkgs.makeBinaryWrapper];
+              postBuild = ''
+                wrapProgram $out/bin/hx --suffix PATH : ${lib.makeBinPath (with unstablePkgs; [
+                  # nix
+                  nixd
+                  alejandra
+
+                  # rust
+                  rust-analyzer
+                  rustfmt
+
+                  # python
+                  ruff
+                  pyright
+
+                  # shell
+                  bash-language-server
+                  shellcheck
+                  shfmt
+
+                  # config
+                  taplo
+                  yaml-language-server
+                  vscode-langservers-extracted
+                  marksman
+                ])}
+              '';
+            })
           ]
           ++ (with unstablePkgs; [
             bat
