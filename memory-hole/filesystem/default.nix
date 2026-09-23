@@ -63,4 +63,14 @@
   swapDevices = [
     {device = "/dev/disk/by-uuid/69afd819-05df-46f2-9f31-08d56b805210";}
   ];
+
+  services.zfs.autoSnapshot = {
+    enable = true;
+    flags = "-k -p --utc";
+    frequent = 8;
+    hourly = 48;
+    daily = 14;
+    weekly = 8;
+    monthly = 24;
+  };
 }
