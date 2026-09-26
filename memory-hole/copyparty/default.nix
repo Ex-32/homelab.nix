@@ -91,6 +91,11 @@ in {
             i = "0.0.0.0";
             p = [globalConfig.webService.copyparty.internalPort];
 
+            usernames = true;
+            ah-alg = "argon2,4,512,2";
+            ah-salt = "hF4k5efWkpST0tKN9df5NMOk";
+            log-badpwd = 1;
+
             fk = 8;
             re-maxage = 3600;
             e2dsa = true;
