@@ -74,6 +74,12 @@ in {
           passwordFile = "/run/secrets/admin_password";
         };
 
+        # needed for nix-command shebang scripts
+        nix.settings = {
+          experimental-features = ["nix-command" "flakes"];
+          use-xdg-base-directories = true;
+        };
+
         system.stateVersion = globalConfig.system.stateVersion;
       };
   };
