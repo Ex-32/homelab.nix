@@ -3,7 +3,6 @@
   pkgs,
   lib,
   nixpkgs,
-  unstablePkgs,
   ...
 }: let
   pi-dir = "/mnt/pi";
@@ -71,70 +70,70 @@ in {
           };
         };
 
-        environment.systemPackages =
-          [
-            (unstablePkgs.python3.withPackages (ps:
-              with ps; [
-                ipympl
-                jupyter
-                matplotlib
-                numpy
-                opencv4
-                pandas
-                plotille
-                pwntools
-                scipy
-                sympy
-              ]))
-            (unstablePkgs.symlinkJoin {
-              name = "helix-with-deps";
-              paths = [pkgs.helix];
-              nativeBuildInputs = [pkgs.makeBinaryWrapper];
-              postBuild = ''
-                wrapProgram $out/bin/hx --suffix PATH : ${lib.makeBinPath (with unstablePkgs; [
-                  # nix
-                  nixd
-                  alejandra
+        environment.systemPackages = let
+          python = pkgs.python3.withPackages (ps:
+            with ps; [
+              ipympl
+              jupyter
+              matplotlib
+              numpy
+              opencv4
+              pandas
+              plotille
+              pwntools
+              scipy
+              sympy
+            ]);
+          helix = pkgs.symlinkJoin {
+            name = "helix-with-deps";
+            paths = [pkgs.helix];
+            nativeBuildInputs = [pkgs.makeBinaryWrapper];
+            postBuild = ''
+              wrapProgram $out/bin/hx --suffix PATH : ${lib.makeBinPath (with pkgs; [
+                # nix
+                nixd
+                alejandra
 
-                  # rust
-                  rust-analyzer
-                  rustfmt
+                # rust
+                rust-analyzer
+                rustfmt
 
-                  # python
-                  ruff
-                  pyright
+                # python
+                ruff
+                pyright
 
-                  # shell
-                  bash-language-server
-                  shellcheck
-                  shfmt
+                # shell
+                bash-language-server
+                shellcheck
+                shfmt
 
-                  # config
-                  taplo
-                  yaml-language-server
-                  vscode-langservers-extracted
-                  marksman
-                ])}
-              '';
-            })
-          ]
-          ++ (with unstablePkgs; [
-            bat
-            dust
-            fd
-            file
-            fzf
-            git
-            htop
-            jq
-            lazygit
-            man-pages
-            neovim
-            nodejs
-            pi-coding-agent
-            ripgrep
-            zellij
-          ]);
+                # config
+                taplo
+                yaml-language-server
+                vscode-langservers-extracted
+                marksman
+              ])}
+            '';
+          };
+        in [
+          helix
+          pkgs.bat
+          pkgs.dust
+          pkgs.fd
+          pkgs.file
+          pkgs.fzf
+          pkgs.git
+          pkgs.htop
+          pkgs.jq
+          pkgs.lazygit
+          pkgs.man-pages
+          pkgs.neovim
+          pkgs.nodejs
+          pkgs.pi-coding-agent
+          pkgs.ripgrep
+          pkgs.zellij
+          python
+        ];
 
         nix.settings = {
           experimental-features = ["nix-command" "flakes"];
