@@ -1,10 +1,15 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    colmena = {
+      url = "github:nix-community/colmena";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     impermanence.url = "github:nix-community/impermanence";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
@@ -19,7 +24,12 @@
     };
   };
 
-  outputs = inputs @ {nixpkgs, ...}: let
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    colmena,
+    ...
+  }: let
     forSystems = nixpkgs.lib.genAttrs [
       "aarch64-linux"
       "x86_64-linux"
@@ -30,7 +40,9 @@
     kiroshi = import ./kiroshi;
     memory-hole = import ./memory-hole;
   in {
-    colmenaHive = {
+    colmenaHive = colmena.lib.makeHive self.outputs.colmena;
+
+    colmena = {
       meta = {
         specialArgs = {inherit inputs;};
         # this is the build platform
