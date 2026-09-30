@@ -125,7 +125,6 @@ in {
           pkgs.git
           pkgs.htop
           pkgs.jq
-          pkgs.katex
           pkgs.lazygit
           pkgs.man-pages
           pkgs.neovim
