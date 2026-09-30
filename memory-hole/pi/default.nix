@@ -133,6 +133,7 @@ in {
           pkgs.omp
           pkgs.pi-coding-agent
           pkgs.ripgrep
+          pkgs.tree
           pkgs.zellij
           python
         ];
