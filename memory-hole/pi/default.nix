@@ -118,6 +118,7 @@ in {
         in [
           helix
           pkgs.bat
+          pkgs.beads
           pkgs.dust
           pkgs.fd
           pkgs.file
@@ -129,6 +130,7 @@ in {
           pkgs.man-pages
           pkgs.neovim
           pkgs.nodejs
+          pkgs.omp
           pkgs.pi-coding-agent
           pkgs.ripgrep
           pkgs.zellij

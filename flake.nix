@@ -13,13 +13,12 @@
     impermanence.url = "github:nix-community/impermanence";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
-    copyparty = {
-      url = "github:9001/copyparty";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    copyparty = {
+      url = "github:9001/copyparty";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -74,12 +73,13 @@
 
     devShells = forSystems (system: let
       pkgs = nixpkgsFor.${system};
+      colmenaPkg = inputs.colmena.packages.${system}.default;
     in {
       default = pkgs.mkShell {
-        packages = with pkgs; [
-          colmena
-          sops
-          ssh-to-age
+        packages = [
+          colmenaPkg
+          pkgs.sops
+          pkgs.ssh-to-age
         ];
       };
     });
