@@ -3,6 +3,7 @@
   pkgs,
   lib,
   nixpkgs,
+  inputs,
   ...
 }: let
   pi-dir = "/mnt/pi";
@@ -117,6 +118,7 @@ in {
           };
         in [
           helix
+          inputs.oh-my-pi.packages.${pkgs.stdenv.hostPlatform.system}.omp
           pkgs.bat
           pkgs.beads
           pkgs.dust
@@ -124,13 +126,13 @@ in {
           pkgs.file
           pkgs.fzf
           pkgs.git
+          pkgs.herdr
           pkgs.htop
           pkgs.jq
           pkgs.lazygit
           pkgs.man-pages
           pkgs.neovim
           pkgs.nodejs
-          pkgs.omp
           pkgs.pi-coding-agent
           pkgs.ripgrep
           pkgs.tree
