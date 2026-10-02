@@ -111,7 +111,10 @@ in {
 
           volumes = let
             admin-only = {
-              r = [];
+              "." = ["admin"];
+              d = ["admin"];
+              m = ["admin"];
+              r = ["admin"];
               rw = ["admin"];
             };
           in {
@@ -121,7 +124,6 @@ in {
 
               flags = {
                 dedup = true;
-                dots = true;
               };
             };
             "/samba" = {
@@ -129,7 +131,6 @@ in {
               access = admin-only;
 
               flags = {
-                dots = true;
               };
             };
             "/jellyfin" = {
@@ -143,10 +144,6 @@ in {
             "/pi-home" = {
               path = "/mnt/pi/home";
               access = admin-only;
-
-              flags = {
-                dots = true;
-              };
             };
           };
 
