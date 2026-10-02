@@ -18,6 +18,7 @@
     ./filesystem
     ./immich
     ./jellyfin
+    ./miniflux
     ./networking
     ./pi
     ./samba

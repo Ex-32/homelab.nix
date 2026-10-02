@@ -49,6 +49,7 @@
     "/mnt/immich/db" = optional-dataset "tank/encrypt/immich/db";
     "/mnt/immich/library" = optional-dataset "tank/encrypt/immich/library";
     "/mnt/jellyfin" = optional-dataset "tanklet/encrypt/jellyfin";
+    "/mnt/miniflux/db" = optional-dataset "tank/encrypt/miniflux/db";
     "/mnt/nextcloud/home" = optional-dataset "tank/encrypt/nextcloud";
     "/mnt/nextcloud/logs" = optional-dataset "tank/encrypt/nextcloud/logs";
     "/mnt/pi/home" = optional-dataset "tank/encrypt/pi/home";
