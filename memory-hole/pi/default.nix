@@ -7,7 +7,20 @@
   ...
 }: let
   pi-dir = "/mnt/pi";
+  stats-port = {
+    internal = "31414";
+    external = "31416";
+  };
 in {
+  # FIXME: don't hardcode this
+  services.caddy.virtualHosts = {
+    "https://memory-hole.tail3782b9.ts.net:${stats-port.external}" = {
+      extraConfig = ''
+        reverse_proxy 127.0.0.1:${stats-port.internal}
+      '';
+    };
+  };
+
   containers.pi = {
     autoStart = true;
     ephemeral = true;
@@ -27,6 +40,7 @@ in {
 
     config = let
       globalConfig = config;
+      omp = inputs.oh-my-pi.packages.${pkgs.stdenv.hostPlatform.system}.omp;
     in
       {
         config,
@@ -118,7 +132,7 @@ in {
           };
         in [
           helix
-          inputs.oh-my-pi.packages.${pkgs.stdenv.hostPlatform.system}.omp
+          omp
           pkgs.bat
           pkgs.beads
           pkgs.dust
@@ -139,6 +153,27 @@ in {
           pkgs.zellij
           python
         ];
+
+        systemd.services.omp-stats = {
+          description = "omp usage statistics dashboard";
+          wantedBy = ["multi-user.target"];
+
+          serviceConfig = {
+            Type = "simple";
+            User = "pi";
+            Group = "pi";
+            # omp resolves ~/.omp (sessions, stats.db) from HOME
+            Environment = ["HOME=/home/pi"];
+            WorkingDirectory = "/home/pi";
+            ExecStart = "${pkgs.omp}/bin/omp stats --host 127.0.0.1 --port 31414";
+            Restart = "on-failure";
+            RestartSec = "5s";
+            # omp only handles SIGINT for a clean closeDb(); a systemd-default
+            # SIGTERM would kill it mid-write (WAL is crash-safe, but unclean)
+            KillSignal = "SIGINT";
+            TimeoutStopSec = "15s";
+          };
+        };
 
         nix.settings = {
           experimental-features = ["nix-command" "flakes"];
