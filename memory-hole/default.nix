@@ -13,6 +13,7 @@
 
   imports = [
     ../common/base.nix
+    ./bookorbit
     ./boot
     ./copyparty
     ./filesystem
