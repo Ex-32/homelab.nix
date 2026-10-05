@@ -107,6 +107,8 @@ in {
           enable = true;
           openFirewall = true;
         };
+
+        system.stateVersion = globalConfig.system.stateVersion;
       };
   };
 
