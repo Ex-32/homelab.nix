@@ -50,6 +50,11 @@ in {
         hostPath = "/mnt/pi/home";
         isReadOnly = false;
       };
+      bookorbit = {
+        mountPoint = "/mnt/bookorbit";
+        hostPath = "/mnt/bookorbit/library";
+        isReadOnly = false;
+      };
 
       secrets = {
         mountPoint = "/run/secrets";
@@ -129,9 +134,6 @@ in {
             "/samba" = {
               path = "/mnt/samba";
               access = admin-only;
-
-              flags = {
-              };
             };
             "/jellyfin" = {
               path = "/mnt/jellyfin";
@@ -143,6 +145,10 @@ in {
             };
             "/pi-home" = {
               path = "/mnt/pi/home";
+              access = admin-only;
+            };
+            "/bookorbit" = {
+              path = "/mnt/bookorbit";
               access = admin-only;
             };
           };
