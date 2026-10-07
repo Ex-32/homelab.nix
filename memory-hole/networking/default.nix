@@ -6,8 +6,9 @@
   ...
 }: {
   imports = [
-    ./zerotierone.nix
+    ./cloudflare.nix
     ./containers.nix
+    ./zerotierone.nix
   ];
 
   networking = {

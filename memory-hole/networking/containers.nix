@@ -139,14 +139,20 @@ in {
           {
             name = "http://:${toString serv.httpPort}";
             value = {
+              listenAddresses = ["127.0.0.1"];
               extraConfig = ''
-                reverse_proxy ${serv.localIP}:${toString serv.internalPort}
+                reverse_proxy ${serv.localIP}:${toString serv.internalPort} {
+                  header_up X-Forwarded-Proto https
+                }
               '';
             };
           }
         ];
       in {
         enable = true;
+        globalConfig = ''
+          trusted_proxies 127.0.0.1/32 ::1/128
+        '';
         virtualHosts =
           builtins.listToAttrs
           (builtins.concatMap webForwards2virtualHosts webServices);
