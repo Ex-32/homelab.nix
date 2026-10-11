@@ -20,7 +20,7 @@ in {
 
     bindMounts = {
       stash-data = {
-        mountPoint = "/mnt/data";
+        mountPoint = "/var/lib/stash";
         hostPath = stash-dir + "/data";
         isReadOnly = false;
       };
@@ -66,9 +66,8 @@ in {
           jwtSecretKeyFile = "/run/secrets/jwt_key";
           sessionStoreKeyFile = "/run/secrets/session_key";
 
-          dataDir = "/mnt/data";
-
           mutableSettings = true;
+          mutablePlugins = true;
 
           username = "admin";
           passwordFile = "/run/secrets/admin_password";
