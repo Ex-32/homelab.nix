@@ -12,6 +12,7 @@
   services.cloudflared = let
     routes = {
       "books.catgirl.red" = "bookorbit";
+      "jellyfin.catgirl.red" = "jellyfin";
     };
 
     genRoutes =
