@@ -183,6 +183,7 @@ in {
           pkgs.man-pages
           pkgs.neovim
           pkgs.nodejs
+          pkgs.opencode
           pkgs.pi-coding-agent
           pkgs.ripgrep
           pkgs.tree
