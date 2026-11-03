@@ -11,44 +11,12 @@
     internal = "31414";
     external = "31416";
   };
-  gui-port = {
-    internal = "5900";
-    external = "31417";
-  };
-
-  # noVNC static client (v1.6 at the pinned nixos-unstable, builds clean there)
-  novnc-webroot = let
-    launcher = pkgs.writeText "index.html" ''
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta http-equiv="refresh" content="0; url=vnc.html?path=websockify&autoconnect=true&resize=remote" />
-        </head>
-      </html>
-    '';
-  in
-    pkgs.symlinkJoin {
-      name = "novnc-webroot";
-      paths = ["${pkgs.novnc}/share/webapps/novnc" launcher];
-    };
 in {
-  # FIXME: don't hardcode the tailscale domain (also used in ../networking/containers.nix)
+  # FIXME: don't hardcode this
   services.caddy.virtualHosts = {
     "https://memory-hole.tail3782b9.ts.net:${stats-port.external}" = {
       extraConfig = ''
         reverse_proxy 127.0.0.1:${stats-port.internal}
-      '';
-    };
-
-    "https://memory-hole.tail3782b9.ts.net:${gui-port.external}" = {
-      extraConfig = ''
-        handle /websockify* {
-          reverse_proxy 127.0.0.1:${gui-port.internal}
-        }
-        handle {
-          root * ${novnc-webroot}
-          file_server
-        }
       '';
     };
   };
@@ -81,7 +49,6 @@ in {
         ...
       }: {
         imports = [
-          ./gui.nix
         ];
 
         # since this is an interactive environment we're not importing the
@@ -100,9 +67,6 @@ in {
             homeMode = "700";
             shell = pkgs.bash;
             createHome = true;
-            # keep the user manager (and with it the headless GUI session)
-            # running across sessions
-            linger = true;
             openssh.authorizedKeys.keys = [
               "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOom0DL7dOkxkF2Xf2s5LX8Z6w8u/ugde2CiA28kUCIm"
             ];
