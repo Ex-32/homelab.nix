@@ -3,7 +3,8 @@
   lib,
   fetchgit,
   kernel,
-  version ? "259cc39e243daef170f145ba87ad134239b5967f",
+  version ? "89b22ff90b86468b186706861dd18663562defa7",
+  hash ? "sha256-5iDybAlRG5HldUA24L9+rSlgEiUPZg50K8IYC+Lie4U=",
 }:
 stdenv.mkDerivation {
   inherit version;
@@ -12,7 +13,7 @@ stdenv.mkDerivation {
   src = fetchgit {
     url = "https://github.com/davidjo/snd_hda_macbookpro";
     rev = version;
-    sha256 = "sha256-M1dE4QC7mYFGFU3n4mrkelqU/ZfCA4ycwIcYVsrA4MY=";
+    inherit hash;
   };
 
   hardeningDisable = ["pic"];
@@ -21,7 +22,7 @@ stdenv.mkDerivation {
   NIX_CFLAGS_COMPILE = ["-g" "-Wall" "-Wno-unused-variable" "-Wno-unused-function"];
 
   makeFlags =
-    kernel.makeFlags
+    kernel.commonMakeFlags
     ++ [
       "INSTALL_MOD_PATH=$(out)"
       "KERNELRELEASE=${kernel.modDirVersion}"
@@ -29,9 +30,6 @@ stdenv.mkDerivation {
     ];
   postPatch = ''
     printf '
-    snd-hda-codec-cs8409-objs := patch_cs8409.o patch_cs8409-tables.o
-    obj-$(CONFIG_SND_HDA_CODEC_CS8409) += snd-hda-codec-cs8409.o
-
     KBUILD_EXTRA_CFLAGS = "-DAPPLE_PINSENSE_FIXUP -DAPPLE_CODECS -DCONFIG_SND_HDA_RECONFIG=1"
 
     PWD := $(shell pwd)/build/hda
@@ -44,14 +42,34 @@ stdenv.mkDerivation {
     ' \
     > Makefile
 
+    # kernel 6.17+ moved the HDA codec drivers from sound/pci/hda to sound/hda/codecs
+    # (see snd_hda_macbookpro install.cirrus.driver.sh for the reference build flow)
     mkdir build
-    tar -xf ${kernel.src} -C ./build --strip-components=3 "linux-${kernel.modDirVersion}/sound/pci/hda"
-    cp patch_cirrus/Makefile patch_cirrus/patch_cirrus_* build/hda
+    tar -xf ${kernel.src} -C ./build --strip-components=2 "linux-${kernel.modDirVersion}/sound/hda"
 
+    # swap in out-of-tree kbuild makefiles that only build the cirrus codec modules
+    mv build/hda/Makefile build/hda/Makefile.orig
+    mv build/hda/common/Makefile build/hda/common/Makefile.orig
+    mv build/hda/codecs/Makefile build/hda/codecs/Makefile.orig
+    mv build/hda/codecs/cirrus/Makefile build/hda/codecs/cirrus/Makefile.orig
+    cp makefiles/Makefile build/hda
+    cp makefiles/Makefile_common build/hda/common/Makefile
+    cp makefiles/Makefile_codecs build/hda/codecs/Makefile
+    cp makefiles/Makefile_cirrus build/hda/codecs/cirrus/Makefile
+
+    # apple codec fixup headers used by the cs8409.apple patches
+    cp patch_cirrus/cirrus_apple.h \
+       patch_cirrus/patch_cirrus_boot84.h \
+       patch_cirrus/patch_cirrus_new84.h \
+       patch_cirrus/patch_cirrus_real84.h \
+       patch_cirrus/patch_cirrus_real84_i2c.h \
+       patch_cirrus/patch_cirrus_hda_generic_copy.h \
+       build/hda/codecs/cirrus
+
+    # kernel-auto-detected apple machine fixes on top of the in-tree cs8409 driver
     cd build/hda
-    patch -b -p2 <../../patch_patch_cs8409.c.diff
-    patch -b -p2 <../../patch_patch_cs8409.h.diff
-    patch -b -p2 <../../patch_patch_cirrus_apple.h.diff
+    patch -b -p1 <../../patch_cs8409.c.diff
+    patch -b -p1 <../../patch_cs8409.h.diff
     cd -
   '';
 
