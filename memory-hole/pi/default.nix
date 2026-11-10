@@ -99,59 +99,56 @@ in {
               scipy
               sympy
             ]);
-          helix = pkgs.symlinkJoin {
-            name = "helix-with-deps";
-            paths = [pkgs.helix];
-            nativeBuildInputs = [pkgs.makeBinaryWrapper];
-            postBuild = ''
-              wrapProgram $out/bin/hx --suffix PATH : ${lib.makeBinPath (with pkgs; [
-                # nix
-                nixd
-                alejandra
-
-                # rust
-                rust-analyzer
-                rustfmt
-
-                # python
-                ruff
-                pyright
-
-                # shell
-                bash-language-server
-                shellcheck
-                shfmt
-
-                # config
-                taplo
-                yaml-language-server
-                vscode-langservers-extracted
-                marksman
-              ])}
-            '';
-          };
         in [
-          helix
-          omp
+          # basics
+          pkgs.man-pages
+
+          # cli tools
           pkgs.bat
-          pkgs.beads
           pkgs.dust
           pkgs.fd
           pkgs.file
           pkgs.fzf
           pkgs.git
-          pkgs.herdr
-          pkgs.htop
           pkgs.jq
-          pkgs.lazygit
-          pkgs.man-pages
-          pkgs.neovim
           pkgs.nodejs
-          pkgs.pi-coding-agent
           pkgs.ripgrep
           pkgs.tree
-          pkgs.zellij
           python
+
+          # tui tools
+          pkgs.htop
+          pkgs.lazygit
+          pkgs.neovim
+    
+          # term multplexers 
+          pkgs.herdr
+          pkgs.zellij
+          
+          # agentic tooling
+          omp
+          pkgs.beads
+          pkgs.pi-coding-agent
+
+          # language servers and formatters
+          ## nix
+          pkgs.alejandra
+          pkgs.nixd
+          ## rust
+          pkgs.rust-analyzer
+          pkgs.rustfmt
+          ## python
+          pkgs.pyright
+          pkgs.ruff
+          ## shell
+          pkgs.bash-language-server
+          pkgs.shellcheck
+          pkgs.shfmt
+          ## config
+          pkgs.marksman
+          pkgs.taplo
+          pkgs.vscode-langservers-extracted
+          pkgs.yaml-language-server
         ];
 
         systemd.services.omp-stats = {
