@@ -130,6 +130,13 @@ in {
           pkgs.beads
           pkgs.pi-coding-agent
 
+          # build toolchains (rust-analyzer/clangd shell out to these)
+          pkgs.cargo
+          pkgs.clang # provides cc/c++ (rustc's default linker)
+          pkgs.cmake
+          pkgs.gnumake
+          pkgs.rustc
+
           # language servers and formatters
           ## nix
           pkgs.alejandra
@@ -140,6 +147,10 @@ in {
           ## python
           pkgs.pyright
           pkgs.ruff
+          ## c/c++
+          pkgs.clang-tools # clangd, clang-format, clang-tidy
+          ## cmake
+          pkgs.cmake-language-server
           ## shell
           pkgs.bash-language-server
           pkgs.shellcheck
