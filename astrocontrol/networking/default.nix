@@ -6,6 +6,7 @@
   ...
 }: {
   imports = [
+    ./nas-port-forward.nix
     ./tailscale.nix
   ];
 
