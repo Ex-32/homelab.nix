@@ -173,7 +173,7 @@ in {
             # omp resolves ~/.omp (sessions, stats.db) from HOME
             Environment = ["HOME=/home/pi"];
             WorkingDirectory = "/home/pi";
-            ExecStart = "${pkgs.omp}/bin/omp stats --host 127.0.0.1 --port 31414";
+            ExecStart = "${omp}/bin/omp stats --host 127.0.0.1 --port 31414";
             Restart = "on-failure";
             RestartSec = "5s";
             # omp only handles SIGINT for a clean closeDb(); a systemd-default
